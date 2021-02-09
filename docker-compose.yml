@@ -1,0 +1,36 @@
+---
+version: '3'
+services:
+  postgis_db:
+    image: 'postgis/postgis:12-3.0'
+    environment:
+      POSTGRES_DB: 'geodjango'
+      POSTGRES_USER: 'geodjango'
+      POSTGRES_PASSWORD: 'geospaas123'
+    volumes:
+      - 'postgis:/var/lib/postgresql/data'
+    ports:
+      - '10432:5432'
+  main:
+    image: 'nansencenter/geospaas:latest-slim'
+    depends_on: ['postgis_db']
+    environment:
+      PYTHONPATH: '/var/geospaas'
+      GEOSPAAS_DB_HOST: 'postgis_db'
+      GEOSPAAS_DB_PORT: '5432'
+      GEOSPAAS_DB_NAME: 'geodjango'
+      GEOSPAAS_DB_USER: 'geodjango'
+      GEOSPAAS_DB_PASSWORD: 'geospaas123'
+    volumes:
+      - './resources/geospaas_project:/var/geospaas/geospaas_project'
+      - './resources/sample.json:/var/geospaas/sample.json'
+    working_dir: '/var/geospaas/'
+    command: >
+             bash -c 'while !</dev/tcp/postgis_db/5432; do sleep 1; done;
+             python geospaas_project/manage.py migrate &&
+             python geospaas_project/manage.py runserver 0.0.0.0:8888'
+    ports:
+      - '8888:8888'
+volumes:
+  postgis:
+...
