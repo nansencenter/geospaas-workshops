@@ -9,8 +9,6 @@ services:
       POSTGRES_PASSWORD: 'geospaas123'
     volumes:
       - 'postgis:/var/lib/postgresql/data'
-    ports:
-      - '10432:5432'
   main:
     image: 'nansencenter/geospaas:latest-slim'
     depends_on: ['postgis_db']
