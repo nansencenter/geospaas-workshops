@@ -30,8 +30,8 @@ docker-compose logs -f main
 ```
 
 Once you see the line `Quit the server with CONTROL-C.`, the container is ready for use.
-It exposes the basic GeoSPaaS web interface on port 8888.
-You can access it by opening the following URL in your browser: <http://localhost:8888>
+It exposes the basic GeoSPaaS web interface on port 8001.
+You can access it by opening the following URL in your browser: <http://localhost:8001>
 
 For now, the database is empty. Let's initialize it with sample data by running:
 
@@ -100,7 +100,7 @@ my_dataset_uri = gcm.DatasetURI(
 my_dataset_uri.save()
 ```
 
-You can now see the spatial coverage of the dataset in the Web viewer at <http://localhost:8888>
+You can now see the spatial coverage of the dataset in the Web viewer at <http://localhost:8001>
 (you can filter on the source, for example).
 
 ## Basic dataset operations
