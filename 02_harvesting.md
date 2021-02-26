@@ -44,7 +44,7 @@ The harvesting container can be stopped before it finishes using the following c
 docker stop geospaas_workshops_harvesting
 ```
 
-Once finished or stopped, the container can be removed with the folllowing command:
+Once finished or stopped, the container can be removed with the following command:
 
 ```
 docker rm geospaas_workshops_harvesting
