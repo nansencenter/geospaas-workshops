@@ -23,6 +23,8 @@ The database container must be up and running (see the [basic setup workshop](./
 The following command runs the harvesting process using the example configuration file.
 
 ```
+docker pull nansencenter/geospaas_harvesting:latest
+
 docker run -d \
 --name geospaas_workshops_harvesting \
 -v "$(pwd)/resources/harvest.yml:/etc/harvest.yml" \
@@ -32,7 +34,7 @@ docker run -d \
 -e 'GEOSPAAS_DB_NAME=geodjango' \
 -e 'GEOSPAAS_DB_USER=geodjango' \
 -e 'GEOSPAAS_DB_PASSWORD=geospaas123' \
-nansencenter/geospaas_harvesting:2.2.2 \
+nansencenter/geospaas_harvesting:latest \
 -m geospaas_harvesting.harvest -c /etc/harvest.yml
 
 docker logs -f geospaas_workshops_harvesting

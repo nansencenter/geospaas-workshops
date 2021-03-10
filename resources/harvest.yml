@@ -9,3 +9,4 @@ harvesters:
     max_db_threads: 1
     urls:
       - 'https://opendap.jpl.nasa.gov/opendap/allData/ghrsst/data/GDS2/L2P/VIIRS_NPP/NAVO/v1/2014/005/contents.html'
+    include: '\.nc$'
