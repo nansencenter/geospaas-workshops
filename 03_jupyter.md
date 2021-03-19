@@ -31,7 +31,7 @@ jupyter:
   ports:
     - '8888:8888'
 ```
-</detail>
+</details>
 
 ## Usage
 
