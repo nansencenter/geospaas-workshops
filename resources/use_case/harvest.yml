@@ -1,0 +1,24 @@
+---
+endless: False
+dump_on_interruption: False
+poll_interval: 30
+harvesters:
+  creodias:
+    class: 'CreodiasEOFinderHarvester'
+    max_fetcher_threads: 1
+    max_db_threads: 1
+    url: 'https://finder.creodias.eu/resto/api/collections/Sentinel3/search.json'
+    search_terms:
+      - processingLevel: 'LEVEL2'
+        instrument: 'OL'
+        productType: 'WFR'
+        status: 'all'
+        dataset: 'ESA-DATASET'
+        timeliness: 'Near Real Time'
+      - processingLevel: 'LEVEL2'
+        instrument: 'SL'
+        productType: 'WST'
+        status: 'all'
+        dataset: 'ESA-DATASET'
+        timeliness: 'Near Real Time'
+    time_range: ['2020-08-18', '2020-08-23']

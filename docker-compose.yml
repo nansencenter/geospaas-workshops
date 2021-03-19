@@ -22,6 +22,7 @@ services:
     volumes:
       - './resources/geospaas_project:/var/geospaas/geospaas_project'
       - './resources/sample.json:/var/geospaas/sample.json'
+      - './resources/use_case/use_case_sample.json:/var/geospaas/use_case_sample.json'
     working_dir: '/var/geospaas/'
     command: >
              bash -c 'while !</dev/tcp/postgis_db/5432; do sleep 1; done;
