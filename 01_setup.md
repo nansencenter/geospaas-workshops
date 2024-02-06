@@ -19,7 +19,7 @@ Then, let's open a CLI in the `geospaas-workshops/` folder and run the following
 This will run two containers: a Postgis database and a container with the core GeoSPaaS code.
 
 ```
-docker pull nansencenter/geospaas:latest-slim
+docker-compose pull
 docker-compose up -d
 ```
 
@@ -77,7 +77,6 @@ my_dataset = gcm.Dataset(
     geographic_location=gcm.GeographicLocation.objects.get_or_create(
         geometry='POLYGON((-34.2 55.1,-18.9 47.1,-44.4 39.7,-34.2 55.1))')[0],
     gcmd_location=gvm.Location.objects.get(type='SEA SURFACE'),
-
 )
 
 gcm.Dataset.objects.count()
@@ -153,30 +152,32 @@ def print_dataset(dataset):
 # Print the properties of one of the Sentinel-3 datasets
 print_dataset(sentinel3_datasets[0])
 
-# Define a rough rectangle which covers Iceland
-iceland_wkt = "POLYGON((-26.8 66.9,-9.9 67,-9.9 62.4,-26.6 62.5,-26.8 66.9))"
+# Define a zone of interest
+zone = 'POLYGON((1 74.3,30.4 75.7,11.8 67.8,1 74.3))'
 
 # Find datasets which intersect this rectangle
-iceland_datasets = Dataset.objects.filter(geographic_location__geometry__intersects=iceland_wkt)
-iceland_datasets.count()
+zone_datasets = Dataset.objects.filter(geographic_location__geometry__intersects=zone)
+zone_datasets.count()
 
-# Find Sentinel 3 SLSTR datasets which intersect this rectangle
-slstr_iceland_datasets = sentinel3_datasets.filter(
-    source__instrument__short_name='SLSTR',
-    geographic_location__geometry__intersects=iceland_wkt
+# Find Sentinel 3 OLCI datasets which intersect this rectangle
+olci_zone_datasets = sentinel3_datasets.filter(
+    source__instrument__short_name='OLCI',
+    geographic_location__geometry__intersects=zone
 )
-slstr_iceland_datasets.count()
+olci_zone_datasets.count()
 
-# Find MODIS datasets which intersect this rectangle
-modis_iceland_datasets = Dataset.objects.filter(
-    source__instrument__short_name='MODIS',
-    geographic_location__geometry__intersects=iceland_wkt
+# Find Sentinel 1 datasets which intersect this rectangle
+s1_zone_datasets = Dataset.objects.filter(
+    source__platform__series_entity='Sentinel-1',
+    geographic_location__geometry__intersects=zone
 )
+s1_zone_datasets.count()
 
-# Find the SLSTR and MODIS datasets which cover Iceland at a given time
+# Find the Sentinel 1 and 3 OLCI datasets which cover Iceland at a given time
 from datetime import datetime, timezone
-date = datetime(2020, 4, 11, 10, 56, tzinfo=timezone.utc)
+start = datetime(2023, 6, 1, 15, tzinfo=timezone.utc)
+stop = datetime(2023, 6, 1, 18, tzinfo=timezone.utc)
 
-slstr_iceland_datasets.filter(time_coverage_start__lt=date, time_coverage_end__gt=date)
-modis_iceland_datasets.filter(time_coverage_start__lt=date, time_coverage_end__gt=date)
+print(olci_zone_datasets.filter(time_coverage_start__lte=stop, time_coverage_end__gt=start).count())
+print(s1_zone_datasets.filter(time_coverage_start__lte=stop, time_coverage_end__gt=start).count())
 ```
