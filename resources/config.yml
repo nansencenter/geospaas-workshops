@@ -1,0 +1,61 @@
+---
+update_vocabularies: False
+update_pythesint: False
+pythesint_versions:
+  gcmd_instrument: '9.1.5'
+  gcmd_science_keyword: '9.1.5'
+  gcmd_provider: '9.1.5'
+  gcmd_platform: '9.1.5'
+  gcmd_location: '9.1.5'
+  gcmd_horizontalresolutionrange: '9.1.5'
+  gcmd_verticalresolutionrange: '9.1.5'
+  gcmd_temporalresolutionrange: '9.1.5'
+  gcmd_project: '9.1.5'
+  gcmd_rucontenttype: '9.1.5'
+  mmd_access_constraints: 'v3.2'
+  mmd_activity_type: 'v3.2'
+  mmd_areas: 'v3.2'
+  mmd_operstatus: 'v3.2'
+  mmd_platform_type: 'v3.2'
+  mmd_use_constraint_type: 'v3.2'
+providers:
+  ceda:
+    type: 'ceda'
+    username: 'anonymous'
+    password: ''
+  cmems:
+    type: 'cmems_ftp'
+    username: !ENV CMEMS_USERNAME
+    password: !ENV CMEMS_PASSWORD
+  cmems_in_situ:
+    type: 'netcdf'
+    longitude_attribute: 'LONGITUDE'
+    latitude_attribute: 'LATITUDE'
+  creodias:
+    type: 'resto'
+    url: 'https://datahub.creodias.eu'
+  copernicus_data_space:
+    type: 'resto'
+    url: 'https://catalogue.dataspace.copernicus.eu'
+  earthdata_cmr:
+    type: 'earthdata_cmr'
+  sla_aviso:
+    type: 'netcdf'
+    longitude_attribute: 'longitude'
+    latitude_attribute: 'latitude'
+  metno:
+    type: 'metno'
+  cpom:
+    type: 'netcdf'
+    longitude_attribute: 'lon'
+    latitude_attribute: 'lat'
+  nansat:
+    type: 'nansat'
+  netcdf_l:
+    type: 'netcdf'
+    longitude_attribute: 'longitude'
+    latitude_attribute: 'latitude'
+  netcdf_L:
+    type: 'netcdf'
+    longitude_attribute: 'LONGITUDE'
+    latitude_attribute: 'LATITUDE'

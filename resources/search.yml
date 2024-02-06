@@ -1,0 +1,8 @@
+---
+common: {}
+searches:
+- provider_name: 'earthdata_cmr'
+  short_name: 'VIIRSJ1_L2_OC_NRT'
+  start_time: '2023-06-01'
+  end_time: '2023-06-02'
+  location: 'bounding_box=-180,60,180,90'
