@@ -5,6 +5,7 @@
 The following software needs to be installed:
 - [Docker](https://docs.docker.com/get-docker/)
 - [docker-compose](https://docs.docker.com/compose/install/)
+- [git](https://git-scm.com/downloads)
 
 ## Running a GeoSPaaS container
 
