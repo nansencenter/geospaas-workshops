@@ -10,7 +10,7 @@ services:
     volumes:
       - 'postgis:/var/lib/postgresql/data'
   main:
-    image: 'nansencenter/geospaas:latest-slim'
+    image: 'nansencenter/geospaas:2.5.2-python3.11'
     depends_on: ['postgis_db']
     environment:
       PYTHONPATH: '/var/geospaas'

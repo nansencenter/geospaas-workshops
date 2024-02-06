@@ -82,6 +82,7 @@ DATABASES = {
         'CONN_MAX_AGE': int(os.getenv('GEOSPAAS_CONN_MAX_AGE', '600')),
     }
 }
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
