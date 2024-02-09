@@ -1,0 +1,4 @@
+*
+!.gitignore
+!sentinel3_*
+!config.ini

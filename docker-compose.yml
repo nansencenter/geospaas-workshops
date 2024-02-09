@@ -10,7 +10,7 @@ services:
     volumes:
       - 'postgis:/var/lib/postgresql/data'
   main:
-    image: 'nansencenter/geospaas:2.5.2-python3.11'
+    image: 'nansencenter/geospaas_processing_worker:3.4.0-python3.7'
     depends_on: ['postgis_db']
     environment:
       PYTHONPATH: '/var/geospaas'
@@ -19,11 +19,17 @@ services:
       GEOSPAAS_DB_NAME: 'geodjango'
       GEOSPAAS_DB_USER: 'geodjango'
       GEOSPAAS_DB_PASSWORD: 'geospaas123'
+      GEOSPAAS_PROCESSING_PROVIDER_SETTINGS_PATH: '/var/use_case/provider_settings.yml'
+      GEOSPAAS_PROCESSING_WORK_DIR: '/var/use_case/workdir'
+    env_file:
+      - './resources/use_case/credentials.env'
     volumes:
+      - './resources/use_case/:/var/use_case/'
       - './resources/geospaas_project:/var/geospaas/geospaas_project'
       - './resources/sample.json:/var/geospaas/sample.json'
       - './resources/use_case/use_case_sample.json:/var/geospaas/use_case_sample.json'
     working_dir: '/var/geospaas/'
+    entrypoint: ''
     command: >
              bash -c 'while !</dev/tcp/postgis_db/5432; do sleep 1; done;
              python geospaas_project/manage.py migrate &&

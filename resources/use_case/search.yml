@@ -1,0 +1,14 @@
+---
+common:
+  start_time: '2022-08-18'
+  end_time: '2022-08-23'
+searches:
+- provider_name: 'creodias'
+  collection: 'SENTINEL-3'
+  productType: 'OL_2_WFR___'
+  timeliness: 'NR'
+
+- provider_name: 'creodias'
+  collection: 'SENTINEL-3'
+  productType: 'SL_2_WST___'
+  timeliness: 'NR'

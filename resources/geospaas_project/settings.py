@@ -32,10 +32,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_celery_results',
     'geospaas.base_viewer',
     'geospaas.nansat_ingestor',
     'geospaas.catalog',
     'geospaas.vocabularies',
+    'geospaas_processing',
 ]
 
 MIDDLEWARE = [

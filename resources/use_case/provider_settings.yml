@@ -1,0 +1,8 @@
+'https://datahub.creodias.eu':
+  username: !ENV 'CREODIAS_USERNAME'
+  password: !ENV 'CREODIAS_PASSWORD'
+  authentication_type: 'oauth2'
+  token_url: 'https://identity.cloudferro.com/auth/realms/Creodias-new/protocol/openid-connect/token'
+  client_id: 'CLOUDFERRO_PUBLIC'
+  max_parallel_downloads: 4
+  totp_secret: !ENV 'CREODIAS_TOTP_SECRET'
