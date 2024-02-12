@@ -113,7 +113,8 @@ print('len(results)', len(results))
 import geospaas_processing.tasks.core as core_tasks
 import geospaas_processing.tasks.idf as idf_tasks
 
-for dataset_id in results[10:]:
+# download the first 10 datasets remove the [0:10] slice to download everything
+for dataset_id in results[0:10]:
     core_tasks.remove_downloaded(
     idf_tasks.convert_to_idf(
     core_tasks.unarchive(
