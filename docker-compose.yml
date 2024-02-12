@@ -9,6 +9,8 @@ services:
       POSTGRES_PASSWORD: 'geospaas123'
     volumes:
       - 'postgis:/var/lib/postgresql/data'
+  cache:
+    image: redis:6
   main:
     image: 'nansencenter/geospaas_processing_worker:3.4.0-python3.7'
     depends_on: ['postgis_db']
@@ -21,6 +23,8 @@ services:
       GEOSPAAS_DB_PASSWORD: 'geospaas123'
       GEOSPAAS_PROCESSING_PROVIDER_SETTINGS_PATH: '/var/use_case/provider_settings.yml'
       GEOSPAAS_PROCESSING_WORK_DIR: '/var/use_case/workdir'
+      GEOSPAAS_PROCESSING_REDIS_HOST: 'cache'
+      GEOSPAAS_PROCESSING_REDIS_PORT: '6379'
     env_file:
       - './resources/use_case/credentials.env'
     volumes:

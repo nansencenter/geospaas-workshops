@@ -82,13 +82,13 @@ The following code is an example of how to find relevant datasets.
 from geospaas.catalog.models import Dataset
 
 # Find some data
-Dataset.objects.count()
+print('Dataset.objects.count()', Dataset.objects.count())
 
 olci_datasets = Dataset.objects.filter(source__instrument__short_name='OLCI')
 slstr_datasets = Dataset.objects.filter(source__instrument__short_name='SLSTR')
 
-olci_datasets.count()
-slstr_datasets.count()
+print('olci_datasets.count()', olci_datasets.count())
+print('slstr_datasets.count()', slstr_datasets.count())
 
 lofoten_polygon = 'POLYGON((-5 75, 20 75, 20 65, -5 65, -5 75))'
 
@@ -105,21 +105,20 @@ for od in lofoten_olci_datasets:
             intersection = od.geographic_location.geometry.intersection(sd.geographic_location.geometry)
             if (intersection.area / od.geographic_location.geometry.area >= 0.99
                     or intersection.area / sd.geographic_location.geometry.area >= 0.99):
-                print(od.id, od.entry_id)
-                print(sd.id, sd.entry_id)
                 results.append(od.id)
                 results.append(sd.id)
+print('len(results)', len(results))
 
 # Download some interesting datasets
 import geospaas_processing.tasks.core as core_tasks
 import geospaas_processing.tasks.idf as idf_tasks
 
-for dataset_id in results[0:2]:
+for dataset_id in results[10:]:
+    core_tasks.remove_downloaded(
     idf_tasks.convert_to_idf(
-        core_tasks.unarchive(
-            core_tasks.download((dataset_id,))))
+    core_tasks.unarchive(
+    core_tasks.download((dataset_id,)))))
 ```
-
 
 After this, there should be new dataset folders in 
 `geospaas_workshops/resources/use_case/workdir/sentinel3_olci_chl` and
@@ -127,8 +126,9 @@ After this, there should be new dataset folders in
 
 ## Visualization in SEAScope
 
-Let us copy these folders to the `data/` directory of SEAScope and start SEAScope.
+Let us copy these folders and the `.ini` files which accompany them to the `data/` directory of
+SEAScope and start SEAScope.
 
-If you want to adjust the visualization parameters, you can modify the `config.ini` file in each
-collection directory. The available parameters are described in the
+If you want to adjust the visualization parameters, you can modify the `.ini` file for each
+collection. The available parameters are described in the
 [SEAScope user manual](https://seascope.oceandatalab.com/docs/seascope_user_manual_20190703.pdf).
