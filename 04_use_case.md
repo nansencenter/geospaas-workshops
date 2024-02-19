@@ -15,9 +15,8 @@ For this, you need on account on the
 Write your credentials in the [cds_credentials.env](./resources/use_case/cds_credentials.env) file
 with the following format:
 ```shell
-CREODIAS_USERNAME=your_username
-CREODIAS_PASSWORD=your_password
-CREODIAS_TOTP_SECRET=your_totp_key
+COPERNICUS_DATA_SPACE_USERNAME=your_username
+COPERNICUS_DATA_SPACE_PASSWORD=your_password
 ```
 
 Then, just like in the first workshop, let's run the database and main containers by running the
@@ -45,10 +44,11 @@ docker-compose exec main python geospaas_project/manage.py loaddata use_case_sam
 ```shell
 docker rm geospaas_workshops_harvesting
 
+# the extra slashes are here for compatibility with git bash
 docker run -d \
 --name geospaas_workshops_harvesting \
--v "$(pwd)/resources/config.yml:/etc/config.yml" \
--v "$(pwd)/resources/use_case/search.yml:/etc/search.yml" \
+-v "/$(pwd)/resources/config.yml:/etc/config.yml" \
+-v "/$(pwd)/resources/use_case/search.yml:/etc/search.yml" \
 --network 'geospaas-workshops_default' \
 -e 'GEOSPAAS_DB_HOST=geospaas-workshops_postgis_db_1' \
 -e 'GEOSPAAS_DB_PORT=5432' \
@@ -79,46 +79,48 @@ docker-compose exec main python geospaas_project/manage.py shell
 The following code is an example of how to find relevant datasets.
 
 ```python
+from datetime import timedelta
 from geospaas.catalog.models import Dataset
 
 # Find some data
 print('Dataset.objects.count()', Dataset.objects.count())
 
-olci_datasets = Dataset.objects.filter(source__instrument__short_name='OLCI')
-slstr_datasets = Dataset.objects.filter(source__instrument__short_name='SLSTR')
+s2_datasets = Dataset.objects.filter(source__platform__short_name__startswith='Sentinel-2')
+s3_datasets = Dataset.objects.filter(source__platform__short_name__startswith='Sentinel-3',
+                                     source__instrument__short_name='SLSTR')
 
-print('olci_datasets.count()', olci_datasets.count())
-print('slstr_datasets.count()', slstr_datasets.count())
+print('s2_datasets.count()', s2_datasets.count())
+print('s3_datasets.count()', s3_datasets.count())
 
-lofoten_polygon = 'POLYGON((-5 75, 20 75, 20 65, -5 65, -5 75))'
+split_polygon = 'POLYGON((15.78 43.9,17.32 43.17,16.42 42.35,14.89 43.25,15.78 43.9))'
 
-lofoten_olci_datasets = olci_datasets.filter(geographic_location__geometry__intersects=lofoten_polygon)
-lofoten_slstr_datasets = slstr_datasets.filter(geographic_location__geometry__intersects=lofoten_polygon)
+split_s2_datasets = s2_datasets.filter(geographic_location__geometry__intersects=split_polygon)
+split_s3_datasets = s3_datasets.filter(geographic_location__geometry__intersects=split_polygon)
 
-results = []
-for od in lofoten_olci_datasets:
-    for sd in lofoten_slstr_datasets:
+print('split_s2_datasets.count()', split_s2_datasets.count())
+print('split_s3_datasets.count()', split_s3_datasets.count())
+
+# add time diff tolerance
+max_time_diff = timedelta(hours=1)
+results = set()
+for s2d in split_s2_datasets:
+    for s3d in split_s3_datasets:
         # Find datasets whose spatial and temporal coverage intersects
-        if (od.time_coverage_start <= sd.time_coverage_end
-                and od.time_coverage_end >= sd.time_coverage_start
-                and od.geographic_location.geometry.intersects(sd.geographic_location.geometry)):
-            intersection = od.geographic_location.geometry.intersection(sd.geographic_location.geometry)
-            if (intersection.area / od.geographic_location.geometry.area >= 0.99
-                    or intersection.area / sd.geographic_location.geometry.area >= 0.99):
-                results.append(od.id)
-                results.append(sd.id)
+        if (s2d.time_coverage_start - max_time_diff <= s3d.time_coverage_end
+                and s2d.time_coverage_end + max_time_diff >= s3d.time_coverage_start
+                and s2d.geographic_location.geometry.intersects(s3d.geographic_location.geometry)):
+            results.add(s2d)
+            results.add(s3d)
 print('len(results)', len(results))
 
-# Download some interesting datasets
+# Download and convert some interesting datasets
 import geospaas_processing.tasks.core as core_tasks
 import geospaas_processing.tasks.idf as idf_tasks
-
-# download the first 10 datasets remove the [0:10] slice to download everything
-for dataset_id in results[0:10]:
+for dataset in results:
     core_tasks.remove_downloaded(
     idf_tasks.convert_to_idf(
     core_tasks.unarchive(
-    core_tasks.download((dataset_id,)))))
+    core_tasks.download((dataset.id,)))))
 ```
 
 After this, there should be new dataset folders in 

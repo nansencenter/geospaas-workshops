@@ -1,14 +1,13 @@
 ---
 common:
-  start_time: '2022-08-18'
-  end_time: '2022-08-23'
+  start_time: '2023-06-01'
+  end_time: '2023-06-02'
+  location: 'POLYGON((13.21 45.97,19.91 41.64,18.30 39.66,10.79 44.90,13.21 45.97))'
 searches:
-- provider_name: 'creodias'
-  collection: 'SENTINEL-3'
-  productType: 'OL_2_WFR___'
-  timeliness: 'NR'
+- provider_name: 'copernicus_data_space'
+  collection: 'SENTINEL-2'
+  processingLevel: 'S2MSI1C'
 
-- provider_name: 'creodias'
+- provider_name: 'copernicus_data_space'
   collection: 'SENTINEL-3'
-  productType: 'SL_2_WST___'
-  timeliness: 'NR'
+  productType: 'SL_1_RBT___'

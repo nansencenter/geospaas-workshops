@@ -1,8 +1,7 @@
-'https://datahub.creodias.eu':
-  username: !ENV 'CREODIAS_USERNAME'
-  password: !ENV 'CREODIAS_PASSWORD'
+'https://catalogue.dataspace.copernicus.eu':
+  username: !ENV 'COPERNICUS_DATA_SPACE_USERNAME'
+  password: !ENV 'COPERNICUS_DATA_SPACE_PASSWORD'
   authentication_type: 'oauth2'
-  token_url: 'https://identity.cloudferro.com/auth/realms/Creodias-new/protocol/openid-connect/token'
-  client_id: 'CLOUDFERRO_PUBLIC'
+  token_url: 'https://identity.dataspace.copernicus.eu/auth/realms/CDSE/protocol/openid-connect/token'
+  client_id: 'cdse-public'
   max_parallel_downloads: 4
-  totp_secret: !ENV 'CREODIAS_TOTP_SECRET'
