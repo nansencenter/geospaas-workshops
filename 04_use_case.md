@@ -117,15 +117,16 @@ print('len(results)', len(results))
 import geospaas_processing.tasks.core as core_tasks
 import geospaas_processing.tasks.idf as idf_tasks
 for dataset in results:
-    core_tasks.remove_downloaded(
-    idf_tasks.convert_to_idf(
-    core_tasks.unarchive(
-    core_tasks.download((dataset.id,)))))
+    if dataset.entry_id.startswith('S2'):
+        core_tasks.remove_downloaded(
+        idf_tasks.convert_to_idf(
+        core_tasks.unarchive(
+        core_tasks.download((dataset.id,)))))
 ```
 
 After this, there should be new dataset folders in 
-`geospaas_workshops/resources/use_case/workdir/sentinel3_olci_chl` and
-`geospaas_workshops/resources/use_case/workdir/sentinel3_slstr_l2_wst`.
+`geospaas_workshops/resources/use_case/workdir/sentinel2_l1/` and
+`geospaas_workshops/resources/use_case/workdir/sentinel3_slstr_sst/`.
 
 ## Visualization in SEAScope
 
