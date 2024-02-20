@@ -12,7 +12,7 @@ the following is needed:
 For this, you need on account on the
 [Copernicus Data Space](https://dataspace.copernicus.eu/).
 
-Write your credentials in the [cds_credentials.env](./resources/use_case/cds_credentials.env) file
+Write your credentials in the [credentials.env](./resources/use_case/credentials.env) file
 with the following format:
 ```shell
 COPERNICUS_DATA_SPACE_USERNAME=your_username
@@ -117,11 +117,10 @@ print('len(results)', len(results))
 import geospaas_processing.tasks.core as core_tasks
 import geospaas_processing.tasks.idf as idf_tasks
 for dataset in results:
-    if dataset.entry_id.startswith('S2'):
-        core_tasks.remove_downloaded(
-        idf_tasks.convert_to_idf(
-        core_tasks.unarchive(
-        core_tasks.download((dataset.id,)))))
+    core_tasks.remove_downloaded(
+    idf_tasks.convert_to_idf(
+    core_tasks.unarchive(
+    core_tasks.download((dataset.id,)))))
 ```
 
 After this, there should be new dataset folders in 
