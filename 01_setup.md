@@ -10,7 +10,7 @@ The following software needs to be installed:
 ## Running a GeoSPaaS container
 
 First, let's clone the following git repository:
-<https://github.com/aperrin66/geospaas-workshops.git>
+<https://github.com/nansencenter/geospaas-workshops.git>
 
 ```
 git clone https://github.com/aperrin66/geospaas-workshops.git
